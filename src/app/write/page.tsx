@@ -368,25 +368,25 @@ export default function WritePage() {
   const selectedEmotion = EMOTIONS.find((e) => e.emoji === emotion);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       {/* Header with moon */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold journal-font">📝 독서록 쓰기</h1>
-        <div className="text-3xl animate-float">🌙</div>
+        <h1 className="text-2xl font-bold journal-font"><span className="text-4xl">📝</span> 독서록 쓰기</h1>
+        <div className="text-5xl animate-float">🌙</div>
       </div>
 
       {/* Notebook area */}
-      <div className="space-y-4">
+      <div className="space-y-3">
         {/* Book selection */}
-        <div className="journal-card p-5 space-y-3">
-          <h2 className="text-sm font-semibold text-purple-300 flex items-center gap-2">
-            📖 어떤 책을 읽었나요?
+        <div className="journal-card p-3 space-y-2">
+          <h2 className="text-base font-semibold text-purple-300 flex items-center gap-2">
+            <span className="text-3xl">📖</span> 어떤 책을 읽었나요?
           </h2>
           {books.length > 0 && (
             <select
               value={selectedBookId}
               onChange={(e) => handleBookSelect(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-sm text-white focus:border-purple-500 focus:outline-none transition-colors"
+              className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/20 text-base text-white focus:border-purple-500 focus:outline-none transition-colors"
             >
               <option value="">직접 입력</option>
               {books.map((b) => (
@@ -396,28 +396,28 @@ export default function WritePage() {
               ))}
             </select>
           )}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-2">
             <input
               type="text"
               value={bookTitle}
               onChange={(e) => setBookTitle(e.target.value)}
               placeholder="책 제목 *"
-              className="px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 focus:border-purple-500 focus:outline-none text-sm text-white placeholder-gray-600 transition-colors journal-font"
+              className="px-3 py-2 rounded-xl bg-white/10 border border-white/20 focus:border-purple-500 focus:outline-none text-base text-white placeholder-gray-500 transition-colors journal-font"
             />
             <input
               type="text"
               value={author}
               onChange={(e) => setAuthor(e.target.value)}
               placeholder="저자"
-              className="px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 focus:border-purple-500 focus:outline-none text-sm text-white placeholder-gray-600 transition-colors journal-font"
+              className="px-3 py-2 rounded-xl bg-white/10 border border-white/20 focus:border-purple-500 focus:outline-none text-base text-white placeholder-gray-500 transition-colors journal-font"
             />
           </div>
         </div>
 
         {/* Pages read */}
-        <div className="journal-card p-5">
-          <h2 className="text-sm font-semibold text-cyan-300 flex items-center gap-2">
-            📄 오늘 몇 페이지 읽었어요?
+        <div className="journal-card p-3">
+          <h2 className="text-base font-semibold text-cyan-300 flex items-center gap-2">
+            <span className="text-3xl">📄</span> 오늘 몇 페이지 읽었어요?
           </h2>
           <input
             type="number"
@@ -425,15 +425,15 @@ export default function WritePage() {
             onChange={(e) => setPagesRead(e.target.value)}
             placeholder="0"
             min="0"
-            className="mt-2 w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 focus:border-cyan-500 focus:outline-none text-sm text-white placeholder-gray-600 transition-colors journal-font"
+            className="mt-2 w-full px-3 py-2 rounded-xl bg-white/10 border border-white/20 focus:border-cyan-500 focus:outline-none text-base text-white placeholder-gray-500 transition-colors journal-font"
           />
         </div>
 
         {/* Quote - underline feeling */}
-        <div className="journal-card p-5">
-          <h2 className="text-sm font-semibold text-yellow-300 flex items-center gap-2">
-            💬 기억하고 싶은 문장
-            <span className="text-[10px] text-gray-500 font-normal">
+        <div className="journal-card p-3">
+          <h2 className="text-base font-semibold text-yellow-300 flex items-center gap-2">
+            <span className="text-3xl">💬</span> 기억하고 싶은 문장
+            <span className="text-xs text-gray-500 font-normal">
               밑줄 긋기
             </span>
           </h2>
@@ -443,39 +443,39 @@ export default function WritePage() {
               onChange={(e) => setQuote(e.target.value)}
               placeholder="책에서 마음에 든 문장을 적어보세요..."
               rows={3}
-              className="w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 focus:border-yellow-500 focus:outline-none text-sm text-white placeholder-gray-600 transition-colors resize-none journal-font quote-underline"
+              className="w-full px-3 py-2 rounded-xl bg-white/10 border border-white/20 focus:border-yellow-500 focus:outline-none text-base text-white placeholder-gray-500 transition-colors resize-y journal-font quote-underline"
             />
           </div>
         </div>
 
         {/* Thoughts */}
-        <div className="journal-card p-5">
-          <h2 className="text-sm font-semibold text-green-300 flex items-center gap-2">
-            💭 나의 생각과 질문들
+        <div className="journal-card p-3">
+          <h2 className="text-base font-semibold text-green-300 flex items-center gap-2">
+            <span className="text-3xl">💭</span> 나의 생각과 질문들
           </h2>
           <textarea
             value={thoughts}
             onChange={(e) => setThoughts(e.target.value)}
             placeholder="책을 읽으면서 든 생각, 궁금한 점을 자유롭게 적어보세요..."
             rows={5}
-            className="mt-2 w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 focus:border-green-500 focus:outline-none text-sm text-white placeholder-gray-600 transition-colors resize-none journal-font"
+            className="mt-2 w-full px-3 py-2 rounded-xl bg-white/10 border border-white/20 focus:border-green-500 focus:outline-none text-base text-white placeholder-gray-500 transition-colors resize-y journal-font"
           />
         </div>
 
         {/* Emotion */}
-        <div className="journal-card p-5">
-          <h2 className="text-sm font-semibold text-pink-300 flex items-center gap-2">
-            🪐 오늘의 감정
+        <div className="journal-card p-3">
+          <h2 className="text-base font-semibold text-pink-300 flex items-center gap-2">
+            <span className="text-3xl">🪐</span> 오늘의 감정
           </h2>
-          <div className="grid grid-cols-3 gap-2 mt-3">
+          <div className="grid grid-cols-5 gap-2 mt-3">
             {EMOTIONS.map((e) => (
               <button
                 key={e.emoji}
                 type="button"
                 onClick={() => setEmotion(e.emoji)}
-                className={`flex items-center gap-2 p-2.5 rounded-xl border transition-all text-left ${
+                className={`flex flex-col items-center gap-1 p-2 rounded-xl border transition-all ${
                   emotion === e.emoji
-                    ? "scale-[1.03]"
+                    ? "scale-[1.05]"
                     : "border-white/5 hover:bg-white/5"
                 }`}
                 style={
@@ -487,17 +487,17 @@ export default function WritePage() {
                     : undefined
                 }
               >
-                <span className="text-lg">{e.emoji}</span>
-                <span className="text-xs text-gray-400">{e.label}</span>
+                <span className="text-4xl">{e.emoji}</span>
+                <span className="text-[10px] text-gray-400 leading-tight">{e.label}</span>
               </button>
             ))}
           </div>
           {selectedEmotion && (
             <div
-              className="mt-3 text-center text-sm font-medium animate-fadeIn"
+              className="mt-3 text-center text-base font-bold animate-fadeIn"
               style={{ color: selectedEmotion.color }}
             >
-              오늘의 독서 감정: {selectedEmotion.emoji}{" "}
+              <span className="text-3xl mr-1">{selectedEmotion.emoji}</span>
               {selectedEmotion.label}
             </div>
           )}

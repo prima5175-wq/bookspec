@@ -32,7 +32,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <Starfield />
         <Navigation />
-        <main className="relative z-10 flex-1 pt-4 pb-20 md:pt-20 md:pb-8 px-4">
+        <main className="relative z-10 flex-1 pt-4 pb-20 md:pt-20 md:pb-8 px-2 sm:px-3">
           <div className="mx-auto max-w-4xl">{children}</div>
         </main>
       </body>

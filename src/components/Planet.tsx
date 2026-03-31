@@ -8,14 +8,13 @@ interface PlanetProps {
   animate?: boolean;
 }
 
-// Realistic relative sizes (Jupiter biggest = 1.0)
 const RELATIVE_SIZES: Record<PlanetType, number> = {
-  mercury: 0.35,
-  venus: 0.55,
-  earth: 0.58,
-  mars: 0.45,
+  mercury: 0.38,
+  venus: 0.58,
+  earth: 0.6,
+  mars: 0.48,
   jupiter: 1.0,
-  saturn: 0.85,
+  saturn: 0.82,
   uranus: 0.65,
   neptune: 0.62,
 };
@@ -25,7 +24,7 @@ export default function Planet({ type, size = 60, animate = true }: PlanetProps)
 
   return (
     <div
-      className={`planet-wrapper ${animate ? "animate-float" : ""}`}
+      className="planet-wrapper"
       style={{
         width: size,
         height: size,
@@ -34,19 +33,13 @@ export default function Planet({ type, size = 60, animate = true }: PlanetProps)
         justifyContent: "center",
       }}
     >
-      <div className={`planet-${type}`} style={{ ["--s" as string]: `${realSize}px` }}>
-        <div className="planet-body">
-          <div className="planet-surface" />
-          <div className="planet-atmosphere" />
-          <div className="planet-shadow" />
-          {(type === "saturn" || type === "uranus") && (
-            <div className="planet-rings">
-              <div className="ring ring-1" />
-              <div className="ring ring-2" />
-              <div className="ring ring-3" />
-            </div>
-          )}
-        </div>
+      <div
+        className={`planet planet-${type} ${animate ? "planet-spin" : ""}`}
+        style={{ width: realSize, height: realSize }}
+      >
+        {type === "saturn" && (
+          <div className="saturn-ring" style={{ width: realSize * 1.7, height: realSize * 0.45 }} />
+        )}
       </div>
     </div>
   );

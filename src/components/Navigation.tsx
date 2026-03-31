@@ -16,27 +16,34 @@ export default function Navigation() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 md:top-0 md:bottom-auto">
-      <div className="mx-auto max-w-4xl px-4">
-        <div className="flex items-center justify-between glass-card !rounded-b-none md:!rounded-b-2xl md:!rounded-t-none px-2 py-1 md:py-2">
+      <div className="mx-auto max-w-4xl px-2">
+        <div className="flex items-center justify-between glass-card !rounded-b-none md:!rounded-b-2xl md:!rounded-t-none px-1 py-1 md:py-2">
           <div className="hidden md:flex items-center gap-2 px-3">
-            <span className="text-xl">🪐</span>
-            <span className="font-bold text-lg bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
-              BookSpec
-            </span>
+            <div className="open-book ob-sm">
+              <div className="ob-left" />
+              <div className="ob-right" />
+              <div className="ob-light" />
+            </div>
+            <span className="logo-3d text-xl">BookSpec</span>
+            <div className="logo-star-field" style={{ transform: "scale(0.55)" }}>
+              <div className="ls ls-1" />
+              <div className="ls ls-2" />
+              <div className="ls ls-3" />
+            </div>
           </div>
           <div className="flex items-center justify-around w-full md:w-auto md:gap-1">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex flex-col md:flex-row items-center gap-0.5 md:gap-2 px-3 md:px-4 py-2 rounded-xl border border-transparent text-sm transition-all ${
+                className={`flex flex-col items-center px-3 py-1.5 rounded-xl border border-transparent transition-all ${
                   pathname === item.href
                     ? "nav-active text-white"
-                    : "text-gray-400 hover:text-white hover:bg-white/5"
+                    : "text-gray-300 hover:text-white hover:bg-white/10"
                 }`}
               >
-                <span className="text-lg">{item.icon}</span>
-                <span className="text-xs md:text-sm">{item.label}</span>
+                <span className="text-3xl leading-none">{item.icon}</span>
+                <span className="text-[10px] font-medium leading-tight mt-0.5">{item.label}</span>
               </Link>
             ))}
           </div>

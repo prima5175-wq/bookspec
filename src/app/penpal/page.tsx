@@ -167,10 +167,10 @@ export default function PenpalPage() {
               const unread = unreadCounts[conn.id] || 0;
               const count = getLettersForConnection(conn.id).length;
               return (
-                <div key={conn.id} className="flex items-center gap-3 p-2 rounded-xl bg-white/5">
+                <div key={conn.id} className="flex items-center gap-3 p-3 rounded-xl bg-white/5">
                   <div className="relative">
                     <div
-                      className="w-9 h-9 rounded-full flex items-center justify-center text-lg"
+                      className="w-14 h-14 rounded-full flex items-center justify-center text-3xl"
                       style={{ background: target.signalColor + "20" }}
                     >
                       {target.icon}
@@ -244,18 +244,18 @@ function ZoneSection({
   return (
     <div>
       {/* Zone header */}
-      <div className="flex items-center gap-2 mb-3 px-1">
+      <div className="flex items-center gap-3 mb-3 px-1">
         <span
-          className="text-sm w-7 h-7 rounded-lg flex items-center justify-center"
+          className="text-2xl w-10 h-10 rounded-lg flex items-center justify-center"
           style={{ background: zone.color + "20" }}
         >
           {zone.icon}
         </span>
         <div>
-          <span className="text-sm font-bold" style={{ color: zone.color }}>
+          <span className="text-base font-bold" style={{ color: zone.color }}>
             {zone.name}
           </span>
-          <span className="text-xs text-gray-600 ml-2">{zone.description}</span>
+          <span className="text-sm text-gray-400 ml-2">{zone.description}</span>
         </div>
       </div>
 
@@ -283,11 +283,11 @@ function ZoneSection({
                   : undefined
               }
             >
-              <div className="p-3.5 flex items-center gap-3">
+              <div className="p-3 flex items-center gap-3">
                 {/* Icon with glow */}
                 <div className="relative shrink-0">
                   <div
-                    className="w-11 h-11 rounded-full flex items-center justify-center text-xl"
+                    className="w-14 h-14 rounded-full flex items-center justify-center text-3xl"
                     style={{
                       background: isConnected
                         ? "rgba(34,197,94,0.1)"
@@ -306,18 +306,18 @@ function ZoneSection({
 
                 {/* Text */}
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium text-sm">{target.name}</div>
-                  <div className="text-xs text-gray-500 mt-0.5 truncate">
+                  <div className="font-bold text-base">{target.name}</div>
+                  <div className="text-sm text-gray-400 mt-0.5 truncate">
                     &quot;{target.subtitle}&quot;
                   </div>
                 </div>
 
                 {/* Action */}
                 {isConnected ? (
-                  <span className="text-[10px] text-green-500/60 shrink-0">연결됨</span>
+                  <span className="text-xs text-green-500/60 shrink-0">연결됨</span>
                 ) : !noSlots ? (
                   <span
-                    className="text-[10px] px-2 py-1 rounded-full shrink-0 font-medium"
+                    className="text-xs px-3 py-1.5 rounded-full shrink-0 font-medium"
                     style={{
                       background: target.signalColor + "15",
                       color: target.signalColor,
