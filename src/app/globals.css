@@ -1,0 +1,898 @@
+@import "tailwindcss";
+
+:root {
+  --background: #050510;
+  --foreground: #e8e6f0;
+  --accent-purple: #7c3aed;
+  --accent-blue: #3b82f6;
+  --accent-cyan: #06b6d4;
+  --card-bg: rgba(30, 27, 75, 0.6);
+  --card-border: rgba(124, 58, 237, 0.3);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent-purple: var(--accent-purple);
+  --color-accent-blue: var(--accent-blue);
+  --color-accent-cyan: var(--accent-cyan);
+  --color-card-bg: var(--card-bg);
+  --color-card-border: var(--card-border);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* =====================================================
+   NEBULA SPACE BACKGROUND
+   ===================================================== */
+.starfield {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  background:
+    /* bright nebula core - hot magenta/pink emission */
+    radial-gradient(ellipse at 22% 28%, rgba(180, 40, 120, 0.25) 0%, rgba(140, 20, 90, 0.12) 25%, transparent 50%),
+    /* purple-violet gas cloud */
+    radial-gradient(ellipse at 72% 18%, rgba(100, 30, 180, 0.22) 0%, rgba(70, 15, 140, 0.1) 30%, transparent 55%),
+    /* teal/cyan reflection nebula */
+    radial-gradient(ellipse at 80% 65%, rgba(10, 160, 180, 0.18) 0%, rgba(5, 100, 130, 0.08) 30%, transparent 50%),
+    /* deep blue molecular cloud */
+    radial-gradient(ellipse at 40% 75%, rgba(20, 40, 160, 0.2) 0%, rgba(10, 20, 100, 0.1) 35%, transparent 55%),
+    /* warm magenta wisps */
+    radial-gradient(ellipse at 55% 35%, rgba(200, 50, 130, 0.12) 0%, rgba(160, 30, 100, 0.06) 30%, transparent 45%),
+    /* distant purple haze */
+    radial-gradient(ellipse at 10% 60%, rgba(90, 20, 160, 0.18) 0%, rgba(60, 10, 120, 0.08) 35%, transparent 55%),
+    /* galaxy cluster elongated glow - upper right */
+    radial-gradient(ellipse 120px 40px at 88% 12%, rgba(180, 160, 220, 0.06) 0%, transparent 100%),
+    /* galaxy cluster elongated glow - lower left */
+    radial-gradient(ellipse 80px 30px at 8% 85%, rgba(150, 170, 220, 0.05) 0%, transparent 100%),
+    /* teal-green interstellar medium */
+    radial-gradient(ellipse at 35% 15%, rgba(15, 120, 140, 0.12) 0%, rgba(8, 80, 100, 0.05) 30%, transparent 48%),
+    /* dark dust lane cutting through */
+    radial-gradient(ellipse at 50% 50%, rgba(2, 2, 8, 0.4) 0%, transparent 30%),
+    /* secondary magenta bloom */
+    radial-gradient(ellipse at 65% 80%, rgba(150, 30, 100, 0.14) 0%, rgba(100, 15, 70, 0.06) 30%, transparent 50%),
+    /* faint blue-violet outer halo */
+    radial-gradient(ellipse at 30% 50%, rgba(40, 20, 120, 0.16) 0%, rgba(20, 10, 80, 0.08) 40%, transparent 65%),
+    /* warm reddish hydrogen-alpha region */
+    radial-gradient(ellipse at 90% 40%, rgba(180, 30, 50, 0.1) 0%, rgba(120, 15, 30, 0.05) 25%, transparent 45%),
+    /* deep space base with subtle blue-black gradient */
+    radial-gradient(ellipse at 50% 50%, #0b0b2a 0%, #070718 40%, #030308 70%, #010104 100%);
+}
+
+/* Distant galaxy clusters - soft elliptical glowing blobs */
+.galaxy-cluster {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(3px);
+  opacity: 0;
+  animation: galaxyGlow 8s ease-in-out infinite alternate;
+}
+
+@keyframes galaxyGlow {
+  0% { opacity: 0.25; transform: scale(0.95); filter: blur(3px); }
+  50% { opacity: 0.45; transform: scale(1.05); filter: blur(2px); }
+  100% { opacity: 0.3; transform: scale(1); filter: blur(3.5px); }
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  animation: twinkle var(--duration, 3s) ease-in-out infinite alternate;
+  opacity: 0;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.1; transform: scale(0.8); }
+  100% { opacity: var(--max-opacity, 0.8); transform: scale(1.2); }
+}
+
+.shooting-star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  animation: shoot 3s ease-in-out infinite;
+  opacity: 0;
+}
+
+.shooting-star::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(to right, white, transparent);
+  transform: rotate(-45deg);
+  transform-origin: right;
+}
+
+@keyframes shoot {
+  0% { transform: translate(0, 0); opacity: 0; }
+  5% { opacity: 1; }
+  15% { transform: translate(-300px, 300px); opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* =====================================================
+   ANIMATIONS
+   ===================================================== */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes planet-rotate {
+  from { background-position-x: 0%; }
+  to { background-position-x: 200%; }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* =====================================================
+   GLASS CARD
+   ===================================================== */
+.glass-card {
+  background: rgba(30, 27, 75, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(124, 58, 237, 0.6);
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.15);
+}
+
+/* =====================================================
+   STAR RATING
+   ===================================================== */
+.star-rating {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.star-rating:hover {
+  transform: scale(1.3);
+}
+
+/* =====================================================
+   SCROLLBAR
+   ===================================================== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: rgba(30, 27, 75, 0.3); }
+::-webkit-scrollbar-thumb { background: rgba(124, 58, 237, 0.5); border-radius: 3px; }
+
+/* =====================================================
+   NAV
+   ===================================================== */
+.nav-active {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.3), rgba(59, 130, 246, 0.3));
+  border-color: rgba(124, 58, 237, 0.5);
+}
+
+/* =====================================================
+   REALISTIC PLANET SYSTEM - CSS ONLY
+   ===================================================== */
+
+/* Common planet structure */
+[class^="planet-"]:not(.planet-wrapper) {
+  position: relative;
+  width: var(--s);
+  height: var(--s);
+}
+
+.planet-body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: visible;
+}
+
+.planet-surface {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.planet-atmosphere {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.planet-shadow {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Hover rotation for all planets */
+.planet-wrapper:hover .planet-surface {
+  animation: planet-rotate 8s linear infinite;
+}
+
+/* =====================================================
+   QUIZ ANIMATIONS
+   ===================================================== */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.4; }
+  50% { transform: translateY(-8px); opacity: 1; }
+}
+
+@keyframes planetEntrance {
+  0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+  60% { transform: scale(1.15) rotate(10deg); opacity: 1; }
+  80% { transform: scale(0.95) rotate(-5deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+/* =====================================================
+   STAT POPUP ANIMATIONS
+   ===================================================== */
+@keyframes statPopupIn {
+  0% {
+    transform: translateY(30px) scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(-10px) scale(1.08);
+    opacity: 1;
+  }
+  70% {
+    transform: translateY(3px) scale(0.97);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes statPopupFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.stat-popup-enter {
+  animation: statPopupIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+             statPopupFloat 2s ease-in-out 0.5s infinite;
+}
+
+.stat-popup-item {
+  transition: all 0.3s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* XP gain popup */
+@keyframes xpGainIn {
+  0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+  50% { transform: scale(1.2) rotate(3deg); opacity: 1; }
+  70% { transform: scale(0.95) rotate(-1deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes xpGainFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.xp-gain-popup {
+  animation: xpGainIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+             xpGainFloat 1.5s ease-in-out 0.6s infinite;
+}
+
+@keyframes bounceOnce {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.3); }
+  50% { transform: scale(0.9); }
+  70% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.animate-bounce-once {
+  animation: bounceOnce 0.6s ease;
+}
+
+/* =====================================================
+   PENPAL / SPACE FREQUENCY ANIMATIONS
+   ===================================================== */
+
+/* Signal dish & waves */
+.signal-connecting {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signal-dish {
+  font-size: 3rem;
+  animation: signalDishScan 3s ease-in-out infinite;
+  z-index: 2;
+}
+
+@keyframes signalDishScan {
+  0%, 100% { transform: rotate(-15deg); }
+  50% { transform: rotate(15deg); }
+}
+
+.signal-wave {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(124, 58, 237, 0.4);
+  animation: signalExpand 2s ease-out infinite;
+}
+
+.signal-wave-1 {
+  width: 60px;
+  height: 60px;
+  animation-delay: 0s;
+}
+
+.signal-wave-2 {
+  width: 90px;
+  height: 90px;
+  animation-delay: 0.5s;
+}
+
+.signal-wave-3 {
+  width: 120px;
+  height: 120px;
+  animation-delay: 1s;
+}
+
+@keyframes signalExpand {
+  0% { transform: scale(0.5); opacity: 0.8; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* Signal bar animation */
+@keyframes signalBar {
+  0%, 100% { height: 6px; opacity: 0.3; }
+  50% { height: 24px; opacity: 1; }
+}
+
+/* Signal success */
+.signal-success {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  animation: signalSuccessIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes signalSuccessIn {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Rocket launch */
+.rocket-launch {
+  position: relative;
+  animation: rocketFly 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes rocketFly {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  30% { transform: translateY(-50px) scale(1.1); }
+  100% { transform: translateY(-800px) scale(0.3); opacity: 0; }
+}
+
+.rocket-trail {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 40px;
+  background: linear-gradient(to bottom, #f97316, #ef4444, transparent);
+  border-radius: 2px;
+  animation: trailFlicker 0.15s ease-in-out infinite alternate;
+}
+
+@keyframes trailFlicker {
+  0% { opacity: 0.6; height: 30px; }
+  100% { opacity: 1; height: 50px; }
+}
+
+/* Satellite landing */
+.satellite-landing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: satelliteLand 2.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Rocket tier variants */
+.rocket-loaded .rocket-trail {
+  background: linear-gradient(to bottom, #a78bfa, #7c3aed, transparent);
+  width: 6px;
+  height: 50px;
+}
+
+.rocket-special .rocket-trail {
+  background: linear-gradient(to bottom, #fbbf24, #f97316, #ef4444, transparent);
+  width: 8px;
+  height: 60px;
+}
+
+.rocket-sparkles {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.rocket-spark {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #fbbf24;
+  animation: sparkFall 0.6s ease-out infinite;
+}
+
+@keyframes sparkFall {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(40px) scale(0); opacity: 0; }
+}
+
+/* Level up burst */
+@keyframes levelUpBurst {
+  0% { transform: translate(-50%, -50%) rotate(var(--angle, 0deg)) translateY(0) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -50%) rotate(var(--angle, 0deg)) translateY(-60px) scale(0); opacity: 0; }
+}
+
+/* Aurora wave */
+@keyframes auroraWave {
+  0%, 100% { transform: translateX(-10%) scaleY(1); opacity: 0.6; }
+  50% { transform: translateX(10%) scaleY(1.3); opacity: 1; }
+}
+
+@keyframes satelliteLand {
+  0% { transform: translateY(-100px) rotate(180deg) scale(0.3); opacity: 0; }
+  40% { transform: translateY(-20px) rotate(360deg) scale(1.1); opacity: 1; }
+  60% { transform: translateY(5px) rotate(370deg) scale(0.95); }
+  80% { transform: translateY(-2px) rotate(360deg) scale(1.02); }
+  100% { transform: translateY(0) rotate(360deg) scale(1); opacity: 1; }
+}
+
+/* =====================================================
+   MERCURY - Dark gray, craters, surface blotches
+   ===================================================== */
+.planet-mercury .planet-surface {
+  background:
+    /* crater spots */
+    radial-gradient(circle at 30% 25%, #555 0%, #555 8%, transparent 9%),
+    radial-gradient(circle at 60% 40%, #4a4a4a 0%, #4a4a4a 6%, transparent 7%),
+    radial-gradient(circle at 45% 70%, #505050 0%, #505050 10%, transparent 11%),
+    radial-gradient(circle at 75% 20%, #484848 0%, #484848 5%, transparent 6%),
+    radial-gradient(circle at 20% 55%, #525252 0%, #525252 7%, transparent 8%),
+    radial-gradient(circle at 85% 65%, #4e4e4e 0%, #4e4e4e 4%, transparent 5%),
+    radial-gradient(circle at 15% 80%, #535353 0%, #535353 6%, transparent 7%),
+    radial-gradient(circle at 55% 15%, #4c4c4c 0%, #4c4c4c 5%, transparent 6%),
+    /* large dark patches */
+    radial-gradient(ellipse at 35% 50%, rgba(60,60,60,0.6) 0%, transparent 40%),
+    radial-gradient(ellipse at 70% 35%, rgba(80,80,80,0.4) 0%, transparent 35%),
+    /* base surface */
+    radial-gradient(circle at 40% 40%, #8a8a8a, #6b6b6b 40%, #585858 70%, #484848);
+  background-size: 200% 100%;
+}
+
+.planet-mercury .planet-shadow {
+  background: radial-gradient(circle at 65% 35%, transparent 30%, rgba(0,0,0,0.7) 100%);
+  box-shadow: inset -4px -4px 15px rgba(0,0,0,0.6), 0 0 15px rgba(150,150,150,0.15);
+}
+
+/* =====================================================
+   VENUS - Thick clouds, orange/cream/yellow swirls, atmospheric glow
+   ===================================================== */
+.planet-venus .planet-surface {
+  background:
+    /* swirling cloud bands */
+    radial-gradient(ellipse at 25% 30%, rgba(255,220,150,0.7) 0%, transparent 30%),
+    radial-gradient(ellipse at 60% 20%, rgba(245,180,80,0.5) 0%, transparent 25%),
+    radial-gradient(ellipse at 40% 60%, rgba(255,200,120,0.6) 0%, transparent 35%),
+    radial-gradient(ellipse at 80% 50%, rgba(230,170,60,0.5) 0%, transparent 25%),
+    radial-gradient(ellipse at 15% 70%, rgba(255,210,130,0.5) 0%, transparent 30%),
+    radial-gradient(ellipse at 55% 85%, rgba(240,190,90,0.6) 0%, transparent 25%),
+    /* cloud texture bands */
+    linear-gradient(
+      to bottom,
+      #e8b84a 0%, #f0c862 8%, #d4a030 16%,
+      #f0c862 24%, #e0aa3e 32%, #f5d678 40%,
+      #d4a030 48%, #e8b84a 56%, #f0c862 64%,
+      #d4a030 72%, #f5d678 80%, #e0aa3e 88%,
+      #e8b84a 100%
+    );
+  background-size: 200% 100%;
+}
+
+.planet-venus .planet-atmosphere {
+  background: radial-gradient(circle at 50% 50%, rgba(255,220,100,0.15) 40%, rgba(255,180,50,0.25) 80%, rgba(255,150,0,0.1) 100%);
+  box-shadow: 0 0 25px rgba(245,197,66,0.4), 0 0 50px rgba(245,197,66,0.15);
+}
+
+.planet-venus .planet-shadow {
+  background: radial-gradient(circle at 65% 35%, transparent 25%, rgba(120,70,0,0.5) 80%, rgba(50,30,0,0.8) 100%);
+  box-shadow: inset -5px -3px 20px rgba(100,60,0,0.5);
+}
+
+/* =====================================================
+   EARTH - Blue ocean, green continents, white clouds, polar ice
+   ===================================================== */
+.planet-earth .planet-surface {
+  background:
+    /* polar ice caps */
+    radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.9) 0%, rgba(220,240,255,0.4) 12%, transparent 18%),
+    radial-gradient(ellipse at 50% 100%, rgba(255,255,255,0.8) 0%, rgba(220,240,255,0.3) 10%, transparent 16%),
+    /* continents (greens and browns) */
+    radial-gradient(ellipse at 30% 35%, #3a7d44 0%, #2d6a30 15%, transparent 20%),
+    radial-gradient(ellipse at 35% 40%, #4a8c50 0%, transparent 18%),
+    radial-gradient(ellipse at 25% 50%, #3a7040 0%, #5a9055 10%, transparent 16%),
+    radial-gradient(ellipse at 65% 30%, #4a8548 0%, #3a7040 12%, transparent 18%),
+    radial-gradient(ellipse at 70% 45%, #5a9050 0%, transparent 14%),
+    radial-gradient(ellipse at 60% 55%, #3d7842 0%, #4a8548 8%, transparent 15%),
+    radial-gradient(ellipse at 45% 65%, #3a7040 0%, transparent 12%),
+    radial-gradient(ellipse at 80% 60%, #5a8c50 0%, transparent 10%),
+    /* cloud wisps */
+    radial-gradient(ellipse at 20% 25%, rgba(255,255,255,0.45) 0%, transparent 18%),
+    radial-gradient(ellipse at 50% 35%, rgba(255,255,255,0.3) 0%, transparent 22%),
+    radial-gradient(ellipse at 75% 55%, rgba(255,255,255,0.35) 0%, transparent 15%),
+    radial-gradient(ellipse at 35% 75%, rgba(255,255,255,0.4) 0%, transparent 20%),
+    radial-gradient(ellipse at 60% 15%, rgba(255,255,255,0.3) 0%, transparent 16%),
+    /* ocean base */
+    radial-gradient(circle at 40% 40%, #1e6ec7, #1a5daa 30%, #155090 60%, #0f3d70);
+  background-size: 200% 100%;
+}
+
+.planet-earth .planet-atmosphere {
+  background: radial-gradient(circle at 50% 50%, transparent 45%, rgba(100,180,255,0.15) 80%, rgba(50,120,220,0.2) 100%);
+  box-shadow: 0 0 20px rgba(59,130,246,0.35), 0 0 40px rgba(59,130,246,0.12);
+}
+
+.planet-earth .planet-shadow {
+  background: radial-gradient(circle at 65% 35%, transparent 30%, rgba(0,20,60,0.6) 85%, rgba(0,10,40,0.85) 100%);
+  box-shadow: inset -5px -3px 20px rgba(0,10,40,0.5);
+}
+
+/* =====================================================
+   MARS - Red iron oxide, dust storms, polar white ice
+   ===================================================== */
+.planet-mars .planet-surface {
+  background:
+    /* polar ice */
+    radial-gradient(ellipse at 50% 2%, rgba(255,255,255,0.75) 0%, rgba(220,200,180,0.3) 10%, transparent 15%),
+    radial-gradient(ellipse at 50% 98%, rgba(255,240,230,0.5) 0%, transparent 10%),
+    /* dark terrain features */
+    radial-gradient(ellipse at 35% 40%, rgba(120,40,20,0.7) 0%, transparent 20%),
+    radial-gradient(ellipse at 55% 55%, rgba(100,35,15,0.6) 0%, transparent 18%),
+    radial-gradient(ellipse at 70% 35%, rgba(130,50,25,0.5) 0%, transparent 22%),
+    radial-gradient(ellipse at 25% 65%, rgba(110,40,20,0.5) 0%, transparent 15%),
+    /* dust storm haze */
+    radial-gradient(ellipse at 60% 45%, rgba(210,160,120,0.3) 0%, transparent 30%),
+    radial-gradient(ellipse at 30% 30%, rgba(200,150,100,0.25) 0%, transparent 25%),
+    /* crater hints */
+    radial-gradient(circle at 45% 50%, rgba(90,30,10,0.4) 0%, rgba(90,30,10,0.4) 4%, transparent 5%),
+    radial-gradient(circle at 65% 60%, rgba(90,30,10,0.3) 0%, rgba(90,30,10,0.3) 3%, transparent 4%),
+    /* base red surface */
+    radial-gradient(circle at 40% 40%, #c1583a, #a8452a 30%, #8c3520 60%, #6e2a18);
+  background-size: 200% 100%;
+}
+
+.planet-mars .planet-atmosphere {
+  box-shadow: 0 0 15px rgba(200,80,40,0.2), 0 0 30px rgba(200,80,40,0.08);
+}
+
+.planet-mars .planet-shadow {
+  background: radial-gradient(circle at 65% 35%, transparent 25%, rgba(40,10,0,0.65) 85%, rgba(20,5,0,0.85) 100%);
+  box-shadow: inset -4px -3px 18px rgba(40,10,0,0.5);
+}
+
+/* =====================================================
+   JUPITER - Orange/brown/cream bands, Great Red Spot, swirls
+   ===================================================== */
+.planet-jupiter .planet-surface {
+  background:
+    /* Great Red Spot */
+    radial-gradient(ellipse at 58% 58%, #c0402a 0%, #a83525 40%, transparent 55%),
+    radial-gradient(ellipse at 58% 58%, rgba(180,60,30,0.5) 0%, transparent 65%),
+    /* swirl details */
+    radial-gradient(ellipse at 30% 35%, rgba(220,180,130,0.4) 0%, transparent 15%),
+    radial-gradient(ellipse at 70% 25%, rgba(180,130,80,0.35) 0%, transparent 18%),
+    radial-gradient(ellipse at 45% 75%, rgba(200,160,100,0.3) 0%, transparent 20%),
+    /* main cloud bands */
+    linear-gradient(
+      to bottom,
+      #d4a050 0%, #e8c888 5%, #c8903a 10%,
+      #f0d8a8 15%, #e0b868 20%, #c08030 25%,
+      #dcc090 30%, #f0d8a8 35%, #c8903a 40%,
+      #a06828 45%, #c08838 48%, #d4a050 52%,
+      #e8c080 55%, #f0d8a8 60%, #c08030 65%,
+      #a06020 70%, #c89048 75%, #e0c080 80%,
+      #d4a050 85%, #b87830 90%, #e8c888 95%, #d4a050 100%
+    );
+  background-size: 200% 100%;
+}
+
+.planet-jupiter .planet-atmosphere {
+  box-shadow: 0 0 25px rgba(249,115,22,0.25), 0 0 50px rgba(249,115,22,0.08);
+}
+
+.planet-jupiter .planet-shadow {
+  background: radial-gradient(circle at 65% 35%, transparent 30%, rgba(60,25,0,0.5) 80%, rgba(30,12,0,0.8) 100%);
+  box-shadow: inset -6px -4px 25px rgba(40,15,0,0.5);
+}
+
+/* =====================================================
+   SATURN - Golden/cream body + multi-layer tilted rings with shadow
+   ===================================================== */
+.planet-saturn .planet-surface {
+  background:
+    /* subtle band details */
+    radial-gradient(ellipse at 35% 30%, rgba(240,220,170,0.5) 0%, transparent 20%),
+    radial-gradient(ellipse at 65% 60%, rgba(210,180,120,0.4) 0%, transparent 18%),
+    /* main bands - softer than Jupiter */
+    linear-gradient(
+      to bottom,
+      #e8d090 0%, #f0dca0 6%, #dcc480 12%,
+      #f0dca0 18%, #e0c878 24%, #d4b868 30%,
+      #ecdca0 36%, #f5e4b0 42%, #dcc480 48%,
+      #d0b060 54%, #e0c878 60%, #f0dca0 66%,
+      #dcc480 72%, #e8d090 78%, #d4b868 84%,
+      #ecdca0 90%, #e0c878 95%, #e8d090 100%
+    );
+  background-size: 200% 100%;
+}
+
+.planet-saturn .planet-atmosphere {
+  box-shadow: 0 0 20px rgba(234,179,8,0.2), 0 0 40px rgba(234,179,8,0.08);
+}
+
+.planet-saturn .planet-shadow {
+  background: radial-gradient(circle at 65% 35%, transparent 25%, rgba(80,50,0,0.45) 80%, rgba(40,25,0,0.75) 100%);
+  box-shadow: inset -5px -3px 20px rgba(60,35,0,0.4);
+}
+
+/* Saturn rings */
+.planet-saturn .planet-rings {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateX(75deg);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.planet-saturn .ring {
+  position: absolute;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.planet-saturn .ring-1 {
+  width: calc(var(--s) * 1.9);
+  height: calc(var(--s) * 1.9);
+  border: calc(var(--s) * 0.06) solid rgba(205,180,130,0.5);
+  box-shadow:
+    0 0 4px rgba(205,180,130,0.2),
+    inset 0 0 4px rgba(205,180,130,0.1);
+}
+
+.planet-saturn .ring-2 {
+  width: calc(var(--s) * 1.65);
+  height: calc(var(--s) * 1.65);
+  border: calc(var(--s) * 0.1) solid rgba(220,195,140,0.45);
+  box-shadow:
+    0 0 3px rgba(220,195,140,0.15),
+    inset 0 0 6px rgba(180,150,100,0.1);
+}
+
+.planet-saturn .ring-3 {
+  width: calc(var(--s) * 1.38);
+  height: calc(var(--s) * 1.38);
+  border: calc(var(--s) * 0.04) solid rgba(190,165,110,0.35);
+}
+
+/* Ring shadow on planet */
+.planet-saturn .planet-surface::after {
+  content: '';
+  position: absolute;
+  top: 8%;
+  left: -5%;
+  right: -5%;
+  height: 12%;
+  background: rgba(0,0,0,0.15);
+  filter: blur(2px);
+  border-radius: 50%;
+}
+
+/* =====================================================
+   URANUS - Mint/teal ice gas, sideways tilted ring
+   ===================================================== */
+.planet-uranus .planet-surface {
+  background:
+    /* subtle atmospheric bands */
+    radial-gradient(ellipse at 40% 30%, rgba(150,230,230,0.3) 0%, transparent 25%),
+    radial-gradient(ellipse at 60% 65%, rgba(120,210,210,0.25) 0%, transparent 20%),
+    /* smooth ice-gas appearance */
+    radial-gradient(circle at 42% 42%,
+      #7fdbdb 0%, #5cc8c8 20%, #45b5b8 40%,
+      #38a0a5 60%, #2d8a90 80%, #257578
+    );
+  background-size: 200% 100%;
+}
+
+.planet-uranus .planet-atmosphere {
+  background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(100,220,220,0.12) 80%, rgba(60,200,200,0.2) 100%);
+  box-shadow: 0 0 25px rgba(6,182,212,0.3), 0 0 50px rgba(6,182,212,0.1);
+}
+
+.planet-uranus .planet-shadow {
+  background: radial-gradient(circle at 65% 35%, transparent 30%, rgba(0,40,45,0.55) 80%, rgba(0,20,25,0.8) 100%);
+  box-shadow: inset -4px -3px 18px rgba(0,30,35,0.4);
+}
+
+/* Uranus rings - tilted sideways (nearly vertical) */
+.planet-uranus .planet-rings {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateX(85deg) rotateY(10deg);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.planet-uranus .ring {
+  position: absolute;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.planet-uranus .ring-1 {
+  width: calc(var(--s) * 1.7);
+  height: calc(var(--s) * 1.7);
+  border: calc(var(--s) * 0.02) solid rgba(150,220,220,0.35);
+}
+
+.planet-uranus .ring-2 {
+  width: calc(var(--s) * 1.55);
+  height: calc(var(--s) * 1.55);
+  border: calc(var(--s) * 0.03) solid rgba(130,200,200,0.25);
+}
+
+.planet-uranus .ring-3 {
+  width: calc(var(--s) * 1.42);
+  height: calc(var(--s) * 1.42);
+  border: calc(var(--s) * 0.015) solid rgba(160,230,230,0.2);
+}
+
+/* =====================================================
+   NEPTUNE - Deep cobalt blue, white storm clouds, dark spot
+   ===================================================== */
+.planet-neptune .planet-surface {
+  background:
+    /* Great Dark Spot */
+    radial-gradient(ellipse at 40% 50%, rgba(20,25,80,0.8) 0%, rgba(30,35,100,0.5) 40%, transparent 55%),
+    /* white storm clouds */
+    radial-gradient(ellipse at 55% 30%, rgba(255,255,255,0.35) 0%, transparent 12%),
+    radial-gradient(ellipse at 35% 65%, rgba(255,255,255,0.3) 0%, transparent 10%),
+    radial-gradient(ellipse at 70% 50%, rgba(255,255,255,0.25) 0%, transparent 14%),
+    radial-gradient(ellipse at 25% 40%, rgba(220,230,255,0.2) 0%, transparent 12%),
+    /* atmospheric bands */
+    linear-gradient(
+      to bottom,
+      #2533a8 0%, #2a3ab0 10%, #1e2890 20%,
+      #3040c0 30%, #2535a8 40%, #1c2585 50%,
+      #2838b0 60%, #3045c8 70%, #2230a0 80%,
+      #1a2080 90%, #2533a8 100%
+    );
+  background-size: 200% 100%;
+}
+
+.planet-neptune .planet-atmosphere {
+  background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(80,100,255,0.1) 80%, rgba(50,60,200,0.18) 100%);
+  box-shadow: 0 0 25px rgba(99,102,241,0.3), 0 0 50px rgba(99,102,241,0.1);
+}
+
+.planet-neptune .planet-shadow {
+  background: radial-gradient(circle at 65% 35%, transparent 25%, rgba(5,5,40,0.6) 80%, rgba(0,0,20,0.85) 100%);
+  box-shadow: inset -5px -3px 20px rgba(0,0,30,0.5);
+}
+
+/* =====================================================
+   JOURNAL / WRITING PAGE
+   ===================================================== */
+.journal-font {
+  font-family: 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
+  letter-spacing: 0.02em;
+  line-height: 1.8;
+}
+
+.journal-card {
+  background: rgba(20, 18, 50, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(100, 80, 160, 0.2);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.journal-card:hover {
+  border-color: rgba(100, 80, 160, 0.4);
+}
+
+/* Notebook left margin line */
+.journal-card::before {
+  content: '';
+  position: absolute;
+  left: 36px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(200, 100, 100, 0.15);
+}
+
+/* Quote underline effect */
+.quote-underline {
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 27px,
+    rgba(255, 220, 100, 0.12) 27px,
+    rgba(255, 220, 100, 0.12) 28px
+  );
+  line-height: 28px;
+}
